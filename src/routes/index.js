@@ -1,12 +1,16 @@
 const express = require('express')
 const router = express.Router()
+const { authenticate } = require('passport');
 
-
+const verificarAdmin = require('../middlewares/verificarAdmin.js');
+const verificarSesion = require('../middlewares/verificarSesion.js')
 
 //Index
-router.get('/', (req, res) => {
+router.get('/', verificarSesion, async (req, res) => {
    
+    console.log(req.user.name)
  
+
     res.render('index.html',
         {
             title: 'Inicio', 
@@ -43,6 +47,13 @@ router.get('/blog', (req, res) => {
     )
 })
 
+router.get('/login', (req, res) => {
+    res.render('login.html',
+        {
+            title: 'Blogs', 
+        }
+    )
+})
 
 
 module.exports = router;
