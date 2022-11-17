@@ -143,3 +143,68 @@ app.post("/login/auth", [
       // res.json({ Error: Error.message })
     }
   })
+
+  app.post("/perfil/edicion/:id", async function (req, res) {
+
+    try {
+      await usuarios.findByIdAndUpdate(req.params.id, {  //Editar campos del perfil
+        nombreCompleto: req.body.nombreCompleto.trim(),
+        telefono: req.body.telefono.trim(),
+        direccion: req.body.direccion.trim(),
+        postal: req.body.postal.trim(),
+        provincia: req.body.provincia.trim(),
+        localidad: req.body.localidad.trim(),
+        sangre: req.body.sangre.trim(),
+        patologias: req.body.patologias.trim(),
+      })
+      res.redirect('/perfil')
+    }
+    catch (error) {
+  
+      return res.redirect('/')
+  
+    }
+  })
+
+  app.post("/perfil/imagen", function (req, res) {
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (err, fields, files) => {
+    //Subir imagenes con el campo de files
+      try {
+        if (err) {
+          throw new Error("Falló")
+        }
+  
+        const file = files.imagen
+      
+        if (file.originalFilename === "") { //Validación si no se sube archivos
+          throw new Error("Agrega una imagen para continuar")
+        }
+        if (!(file.mimetype === "image/jpeg" || file.mimetype === "image/png")) { //Formatos válidos
+          throw new Error("Formato no válido, prueba con .png o .jpg")
+        }
+  
+        if (file.size > 50 * 1024 * 1024) { //Tamaño máximo de 50mb
+          throw new Error("Ingrese un archivo de menos de 50mb")
+        }
+        let separado = file.mimetype.split("/");
+        let formato = separado[1];
+        let dirFile = path.join(__dirname, `./public/img/perfiles/${req.user.id}.${formato}`) //crear la  ruta para guardar la imagen
+  
+        fs.copyFile(file.filepath, dirFile, function (err) {
+          if (err) throw err;
+        }); //Copiar archivo desde la ruta original al servidor
+        req.flash("mensajes", [{ msg: "Archivo subido" }]) 
+        let nuevo = req.user.id+'.'+formato //Guardar nombre de la imagen para pasarlo a la base de datos
+        await usuarios.findByIdAndUpdate(req.user.id, { //Guardar producto en mongodb
+          imagen: nuevo,
+        });
+      }
+      catch (error) {
+        req.flash("mensajes", [{ msg: error.message }]) //Devolver cualquier error
+      }
+      finally {
+        res.redirect('/perfil') //Redireccionar al panel de admin
+      }
+    })
+  })
