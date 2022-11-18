@@ -68,12 +68,13 @@ router.get('/doctores', (req, res) => {
         usuarioLogeado = req.user
         estaLog = true
     }
- 
+    usuarios.find({}, function (err, pacientes) {
     res.render('doctors.html',
         {
             title: 'Doctores', 
             usuario: usuarioLogeado,
-            estaLog: estaLog
+            estaLog: estaLog,
+            pacientes: pacientes
         }
     )
 })
@@ -103,12 +104,36 @@ router.get('/login', (req, res) => {
     }
     res.render('login.html',
         {
-            title: 'Blogs', 
+            title: 'Perfil de usuario', 
             usuario: usuarioLogeado,
             estaLog: estaLog
         }
     )
 })
+
+
+
+router.get('/admin', (req, res) => {
+    let usuarioLogeado = " "
+    let estaLog = false
+    if (req.isAuthenticated()) {
+        usuarioLogeado = req.user
+        estaLog = true
+    }
+    usuarios.find({}, function (err, pacientes) {
+    
+    res.render('admin.html',
+        {
+            title: 'Administradores', 
+            usuario: usuarioLogeado,
+            estaLog: estaLog,
+            pacientes: pacientes
+        }
+    )
+    })
+})
+})
+
 
 router.get('/contacto', (req, res) => {
     let usuarioLogeado = " "
@@ -124,6 +149,13 @@ router.get('/contacto', (req, res) => {
             estaLog: estaLog
         }
     )
+})
+
+router.get('/logout', (req, res) => {
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
 })
 
 

@@ -8,7 +8,6 @@ const UsuarioSchema = new mongoose.Schema({
     },
     imagen: {
         type:  String,
-        required: true
     },
     email: {
         type:  String,
@@ -20,6 +19,12 @@ const UsuarioSchema = new mongoose.Schema({
           },
     admin: {
         type:  Boolean
+    },
+    rol: {
+        type:  String,
+    },
+    especialidad: {
+        type:  String,
     },
     nombreCompleto: {
         type:  String,

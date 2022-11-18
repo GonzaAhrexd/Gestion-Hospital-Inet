@@ -12,7 +12,8 @@
   <title>
     <%= title %>
   </title>
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/maicons.css">
 
   <link rel="stylesheet" href="/css/bootstrap.css">
@@ -24,6 +25,8 @@
   <link rel="stylesheet" href="/css/theme.css">
 
   <link rel="stylesheet" href="/css/perfil.css">
+
+  <link rel="stylesheet" href="/css/admin.css">
 </head>
 
 <body>
@@ -35,338 +38,239 @@
     <%- include ('partials/navigation.html') %>
   </header>
 
-  <div class="Separacion">
-    <div class="container">
-      <div class="main-body">
-        <div>
-          <div class="row gutters-sm">
-            <div class="col-md-4 mb-3">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex flex-column align-items-center text-center">
-                    <% if(!usuario.imagen) { %>
-                    <img src="/img/Avatar-Profile-Vector-PNG-Pic.png" alt="imagen" class="rounded-circle" width="150">
-                    <% } %>
-                    <img src="/img/perfiles/<%= usuario.imagen %>" alt=" " class="rounded-circle" width="250px" height="250px">
-                    <br>
-                    <form method="post" id="fruitkha-contact" action="/perfil/imagen" enctype="multipart/form-data">
-                      <p> <input class="form-control form-control-lg" type="file" placeholder="Imagen (Link)" name="imagen" id="imagen" required>
-                      </p>
-                      <button type="submit" class="btn btn-primary">Subir</button>
-                    </form>
-                    <div class="mt-3">
-                      <h4>
-                        <%= usuario.name %>
-                      </h4>
-                      <p class="text-muted font-size-sm">
-                        <%= usuario.provincia %>
-                          <%= usuario.localidad %>
-                            <%= usuario.direccion %>
 
-                              <% if(usuario.admin){ %>
-                                <div>
-                                  <a href="/admin" class="adminboton">Panel de
-                                    Administrador</a>
-                                </div>
-                                <% } %>
-                             
-                      </p>
-                    </div>
-                  </div>
+    <div class="hero-area hero-bg">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-9 offset-lg-2 text-center">
+            <div class="hero-text">
+              <div class="hero-text-tablecell">
+                <h1> Panel de Admin </h1>
+                <div class="hero-btns">
+                  <a onClick="pacientes()" href="#pacientes" class="btn btn-primary">Pacientes</a>
+                  <a onClick="medicos()" href="#Medicos" class="btn btn-primary">Medicos</a>
+                  <a onClick="admins()" href="#Administradores" class="btn btn-primary">Administradores</a>
+
                 </div>
               </div>
-
             </div>
-            <div class="col-md-8">
-              <section id="datos">
-                <div class="card mb-3">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Nombre y apellido</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        <%= usuario.nombreCompleto %>
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Email</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        <%= usuario.email %>
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Teléfono</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        <%= usuario.telefono %>
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Provincia</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        <%= usuario.provincia %>
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Localidad</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        <%= usuario.localidad %>
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Dirección</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        <%= usuario.direccion %>
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Código postal</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        <%= usuario.postal %>
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Tipo de Sangre</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        <%= usuario.sangre %>
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Patalogias</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        <%= usuario.patologias %>
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Enfermero Asignado</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        <%= usuario.enfermeroAsignado %>
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-12">
-
-                        <button class="perfilbotones" onClick="editar()">Editar</a>
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-              <section id="edicion">
-                <div class="card mb-3">
-                  <form action="/perfil/edicion/<%= usuario.id %>" method="post">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Nombre y apellido</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          <input class="editar" type="text" name="nombreCompleto" value="<%= usuario.nombreCompleto %>">
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Email</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          <%= usuario.email %>
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Teléfono</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          <input class="editar" name="telefono" type="text" value="<%= usuario.telefono %>">
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Provincia</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          <input class="editar" name="provincia" type="text" value="<%= usuario.provincia %>">
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Localidad</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          <input class="editar" name="localidad" type="text" value="<%= usuario.localidad %>">
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Dirección</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          <input class="editar" name="direccion" type="text" value="<%= usuario.direccion %>">
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Código Postal</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          <input class="editar" name="postal" type="text" value="<%= usuario.postal %>">
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Tipo de Sangre</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          <input class="editar" name="sangre" type="text" value="<%= usuario.sangre %>">
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Patalogias</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          <input class="editar" name="patologias" type="text" value="<%= usuario.patalogias %>">
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Enfermero Asignado</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                         <%= usuario.enfermeroAsignado %>
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-12">
-
-                          <button type="reset" class="perfilbotones" onClick="cancelar()">Cancelar</a>
-                            <button class="perfilbotones" type="submit" value="Guardar">
-                              Guardar
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-              </section>
-            </div>
-
-
-
-          </div>
-
-          <div>
-
           </div>
         </div>
       </div>
     </div>
-  </div>
-      <section>
-        <!-- .page-section -->
+
+  
+  <section id="pacientes">
+    <div class="page-section bg-light">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
 
 
-        <footer class="page-footer">
-          <div class="container">
-            <div class="row px-md-3">
-              <div class="col-sm-6 col-lg-3 py-3">
-                <h5>Company</h5>
-                <ul class="footer-menu">
-                  <li><a href="#">About Us</a></li>
-                  <li><a href="#">Career</a></li>
-                  <li><a href="#">Editorial Team</a></li>
-                  <li><a href="#">Protection</a></li>
-                </ul>
-              </div>
-              <div class="col-sm-6 col-lg-3 py-3">
-                <h5>More</h5>
-                <ul class="footer-menu">
-                  <li><a href="#">Terms & Condition</a></li>
-                  <li><a href="#">Privacy</a></li>
-                  <li><a href="#">Advertise</a></li>
-                  <li><a href="#">Join as Doctors</a></li>
-                </ul>
-              </div>
-              <div class="col-sm-6 col-lg-3 py-3">
-                <h5>Our partner</h5>
-                <ul class="footer-menu">
-                  <li><a href="#">One-Fitness</a></li>
-                  <li><a href="#">One-Drugs</a></li>
-                  <li><a href="#">One-Live</a></li>
-                </ul>
-              </div>
-              <div class="col-sm-6 col-lg-3 py-3">
-                <h5>Contact</h5>
-                <p class="footer-link mt-2">351 Willow Street Franklin, MA 02038</p>
-                <a href="#" class="footer-link">701-573-7582</a>
-                <a href="#" class="footer-link">healthcare@temporary.net</a>
+            <div class="row">
 
-                <h5 class="mt-3">Social Media</h5>
-                <div class="footer-sosmed mt-3">
-                  <a href="#" target="_blank"><span class="mai-logo-facebook-f"></span></a>
-                  <a href="#" target="_blank"><span class="mai-logo-twitter"></span></a>
-                  <a href="#" target="_blank"><span class="mai-logo-google-plus-g"></span></a>
-                  <a href="#" target="_blank"><span class="mai-logo-instagram"></span></a>
-                  <a href="#" target="_blank"><span class="mai-logo-linkedin"></span></a>
+                  <%pacientes.forEach(usuario=> { %>
+                    <%if(usuario.rol=="paciente" ){ %>
+                      <div class="col-md-6 col-lg-4 py-3 wow zoomIn">
+                      <div class="card-doctor">
+                        <div class="header">
+                     
+                        <figure class="abrirModal" width="50%">
+                          <img class="imagenProducto" src="/img/perfiles/<%=usuario.imagen %>" width="50%"
+                            height="100%"></img>
+                        </figure>
+                      </div>
+                      <div class="body">
+                      <p> <b> Nombre </b> </p>
+                      <h3 id=carroAgregar-nombre id="nombreProductos">
+                        <%= usuario.name %>
+                      </h3>
+                      <p> <b> Email </b> </p>
+                      <p>
+                        <%= usuario.email %>
+                      </p>
+                      <p> <b> Dirección </b></p>
+                      <p>
+                        <%= usuario.direccion  || 'Sin asignar'  %>
+                      </p>
+                      <p> <b> Teléfono </b></p>
+                      <p>
+                        <%= usuario.telefono || 'Sin asignar' %>
+                      </p>
+                      <p> <b> Tipos de sangre </b></p>
+                      <p>
+                        <%= usuario.sangre  || 'Sin asignar' %>
+                      </p>
+                      <p> <b> Patologias </b></p>
+                      <p>
+                        <%= usuario.patologias  || 'Sin asignar' %>
+                      </p>
+                      <p> <b> Enfermero Asignado </b></p>
+                      <p>
+                        <%= usuario.enfermeroAsignado  || 'Sin asignar' %>
+                      </p>
+                      <p> <b> Cambiar medico asignado </b></p>
+                      <form method="post" action="/asignar/medico/<%= usuario.id %>">
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                          name="medico" selected=" <%= usuario.enfermeroAsignado  %>">
+                          <%pacientes.forEach(medico=> { %>
+                            <%if(medico.rol=="medico" ){ %>
+
+                              <option value="<%= medico.name %>">
+                                <%= medico.name %>
+                              </option>
+                              <% }})%>
+
+                        </select>
+                        <p> <button type="submit" class="btn btn-primary" id="<%= usuario.id %>"><i
+                              class="fas fa-shopping-cart"></i>
+                            Asignar médico</button> </p>
+                      </form>
+                    </div>
+                    </div>
+                  </div>
+                      <% }})%>
+                    </div>
+
+                  </div>
+                </div>
                 </div>
               </div>
+            </div> <!-- .container -->
+          </div> <!-- .page-section -->
+
+    
+    
+  </section>
+  <br>
+  <section id="Medicos">
+    
+  <div class="page-section bg-light">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <form method="post" action="medicos/agregar">
+            <div class="container" style="display:flex;width:100%">
+              <div>
+                <input type="text" name="email" class="form-control" placeholder="Correo del Médico">
+              </div>
+              <div>
+                <button type="submit" class="btn btn-primary">Asignar rol de Medico</button>
+
+              </div>
+
             </div>
+            <p>* Sólo entrega este rol a personas de confianza</p>
+          </form>
+          <div class="row">
+            <%pacientes.forEach(usuario=> { %>
+              <%if(usuario.rol=="medico" ){ %>
+            <div class="col-md-6 col-lg-4 py-3 wow zoomIn">
+              <div class="card-doctor">
+                <div class="header">
+                  <img src="/img/perfiles/<%=usuario.imagen %>" alt="">
+                 
+                </div>
+                <div class="body">
+                  <p class="text-xl mb-0">  <%= usuario.name %></p>
+                  <p class="text-xl mb-0">  <%= usuario.email %></p>
+                  <span class="text-sm text-grey"><%= usuario.especialidad ||  'No asignada' %> </span>
 
-            <hr>
+          
+                </div>
+                <form method="post" action="medicos/eliminar/<%= usuario.id %>">
+                  <div class="container" style="display:flex;width:100%;justify-content: center;">
+                    <div>
+                      <button type="submit" class="btn btn-primary">Eliminar rol</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <% }})%>
 
-            <p id="copyright">Copyright &copy; 2020 <a href="https://macodeid.com/" target="_blank">MACode ID</a>. All
-              right reserved</p>
+
           </div>
-        </footer>
 
-        <script src="/js/jquery-3.5.1.min.js"></script>
+        </div>
+      </div>
+    </div> 
+</div>
 
-        <script src="/js/bootstrap.bundle.min.js"></script>
+  </section>
 
-        <script src="/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+  <section id="Administradores">
 
-        <script src="/vendor/wow/wow.min.js"></script>
+    <div class="product-section mt-150 mb-150">
+      <div class="container">
+        <div class="row product-lists">
+          <form method="post" action="admin/agregar">
+            <div class="container" style="display:flex;width:100%">
+              <div>
+                <input type="text" name="email" class="form-control" placeholder="Correo del Médico">
+              </div>
+              <div>
+                <button type="submit" class="btn btn-primary">Asignar rol de Admin</button>
 
-        <script src="/js/theme.js"></script>
+              </div>
 
-        <script src="/js/perfil.js"></script>
+            </div>
+            <p>* Sólo entrega este rol a personas de confianza</p>
+          </form>
+          <%pacientes.forEach(usuario=> { %>
+            <%if(usuario.admin ){ %>
+              <div class="col-md-6 col-lg-4 py-3 wow zoomIn">
+                <div class="card-doctor">
+                  <div class="header">
+                    <img src="/img/perfiles/<%=usuario.imagen %>" alt="">
+                    <div class="meta">
+                      <a href="#"><span class="mai-call"></span></a>
+                      <a href="#"><span class="mai-logo-whatsapp"></span></a>
+                    </div>
+                  </div>
+                  <div class="body">
+                    <p class="text-xl mb-0">  <%= usuario.name %></p>
+                    <p class="text-xl mb-0">  <%= usuario.email %></p>
+                    <span class="text-sm text-grey"><%= usuario.especialidad ||  'No asignada' %> </span>
+  
+            
+                  </div>
+                  <form method="post" action="medicos/eliminar/<%= usuario.id %>">
+                    <div class="container" style="display:flex;width:100%;justify-content: center;">
+                      <div>
+                        <button type="submit" class="btn btn-primary">Eliminar rol</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <% }})%>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+
+  <%- include ('partials/footer.html') %>
+
+    <script src="/js/jquery-3.5.1.min.js"></script>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+
+    <script src="/vendor/wow/wow.min.js"></script>
+
+    <script src="/js/theme.js"></script>
+
+    <script src="/js/perfil.js"></script>
+    <script src="/js/admin.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+      crossorigin="anonymous"></script>
 </body>
 
 </html>

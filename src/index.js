@@ -93,7 +93,7 @@ app.post("/login/register", [
         }
         else {
           let nuevoUsuario = new usuarios({ //Guardar nuevo usuario
-            name: nameREG, email: emailREG, pass: passREG, admin: false
+            name: nameREG, email: emailREG, pass: passREG, admin: false, rol: 'paciente'
           });
           nuevoUsuario.save();
           res.redirect('/')
@@ -156,6 +156,7 @@ app.post("/login/auth", [
         localidad: req.body.localidad.trim(),
         sangre: req.body.sangre.trim(),
         patologias: req.body.patologias.trim(),
+        especialidad: req.body.especialidad.trim(),
       })
       res.redirect('/perfil')
     }
@@ -207,4 +208,85 @@ app.post("/login/auth", [
         res.redirect('/perfil') //Redireccionar al panel de admin
       }
     })
+  })
+
+  app.post("/asignar/medico/:id", async function (req, res) {
+
+    try {
+    
+      await usuarios.findByIdAndUpdate(req.params.id, {  //Editar campos del perfil
+        enfermeroAsignado: req.body.medico
+      })
+      res.redirect('/admin')
+    }
+    catch (error) {
+  
+      return res.redirect('/')
+  
+    }
+  })
+
+  app.post("/medicos/agregar", async function (req, res) {
+
+    try {
+    
+      await usuarios.findOneAndUpdate({email: req.body.email}, {  //Editar campos del perfil
+        rol: "medico"
+      })
+      res.redirect('/admin')
+    }
+    catch (error) {
+  
+      return res.redirect('/')
+  
+    }
+  })
+
+  app.post("/medicos/eliminar/:id", async function (req, res) {
+
+    try {
+    
+      await usuarios.findByIdAndUpdate(req.params.id, {  //Editar campos del perfil
+        rol: "paciente"
+      })
+      res.redirect('/admin')
+    }
+    catch (error) {
+  
+      return res.redirect('/')
+  
+    }
+  })
+
+  app.post("/admin/agregar", async function (req, res) {
+
+    try {
+    
+      await usuarios.findOneAndUpdate({email: req.body.email}, {  //Editar campos del perfil
+        admin: true
+      })
+      res.redirect('/admin')
+    }
+    catch (error) {
+  
+      return res.redirect('/')
+  
+    }
+  })
+
+  
+  app.post("/admin/eliminar/:id", async function (req, res) {
+
+    try {
+    
+      await usuarios.findByIdAndUpdate(req.params.id, {  //Editar campos del perfil
+        admin: false
+      })
+      res.redirect('/admin')
+    }
+    catch (error) {
+  
+      return res.redirect('/')
+  
+    }
   })
