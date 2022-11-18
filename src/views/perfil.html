@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <meta name="copyright" content="MACode ID, https://macodeid.com/">
+  <meta name="copyright" content="MACode ID, https://macodeid.com/">+
 
   <title>
     <%= title %>
@@ -275,10 +275,10 @@
                       <hr>
                       <div class="row">
                         <div class="col-sm-3">
-                          <h6 class="mb-0">Patalogias</h6>
+                          <h6 class="mb-0">Patologias</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          <input class="editar" name="patologias" type="text" value="<%= usuario.patalogias %>">
+                          <input class="editar" name="patologias" type="text" value="<%= usuario.patologias %>">
                         </div>
                       </div>
                       <hr>
@@ -291,6 +291,7 @@
                           <div class="col-sm-9 text-secondary">
                             <%= usuario.enfermeroAsignado %>
                           </div>
+                          <input class="editar" hidden name="especialidad" type="text" value=""> 
                           <% } %>
                           <% if(usuario.rol=='medico') { %>
                             <div class="row">

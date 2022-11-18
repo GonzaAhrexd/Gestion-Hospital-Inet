@@ -161,7 +161,7 @@ app.post("/login/auth", [
       res.redirect('/perfil')
     }
     catch (error) {
-  
+      console.log(req.body)
       return res.redirect('/')
   
     }
@@ -290,3 +290,62 @@ app.post("/login/auth", [
   
     }
   })
+
+  const zonas = require('./models/zonas.js');
+
+  app.post("/zonas/agregar", function (req, res) {
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (err, fields, files) => {
+    //Subir imagenes con el campo de files
+      try {
+        if (err) {
+          throw new Error("Falló")
+        }
+        let zonaExistente = await zonas.findOne({ nombre: fields.nombre })
+        if (zonaExistente) {
+          throw new Error('Producto ya existente')
+        }
+  
+        const file = files.imagen
+      
+        if (file.originalFilename === "") { //Validación si no se sube archivos
+          throw new Error("Agrega una imagen para continuar")
+        }
+        if (!(file.mimetype === "image/jpeg" || file.mimetype === "image/png")) { //Formatos válidos
+          throw new Error("Formato no válido, prueba con .png o .jpg")
+        }
+  
+        if (file.size > 50 * 1024 * 1024) { //Tamaño máximo de 50mb
+          throw new Error("Ingrese un archivo de menos de 50mb")
+        }
+        let dirFile = path.join(__dirname, `./public/img/zonas/${file.originalFilename}`) //crear la  ruta para guardar la imagen
+  
+        fs.copyFile(file.filepath, dirFile, function (err) {
+          if (err) throw err;
+        }); //Copiar archivo desde la ruta original al servidor
+        req.flash("mensajes", [{ msg: "Archivo subido" }]) 
+        let nuevo = files.imagen.originalFilename //Guardar nombre de la imagen para pasarlo a la base de datos
+        let nuevaZona = new zonas({ //Guardar producto en mongodb
+          nombre: fields.nombre,
+          imagen: nuevo,
+          descripcion: fields.descripcion
+        });
+        nuevaZona.save();
+      }
+      catch (error) {
+        req.flash("mensajes", [{ msg: error.message }]) //Devolver cualquier error
+      }
+      finally {
+        res.redirect('/admin') //Redireccionar al panel de admin
+      }
+    })
+  })
+
+  
+
+  const eliminarZonas = async (req, res) => { 
+    await zonas.findByIdAndDelete(req.params.id);
+    res.redirect("/admin")
+  };
+  
+  app.post('/zonas/eliminar/:id', eliminarZonas)

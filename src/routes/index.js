@@ -4,6 +4,8 @@ const { authenticate } = require('passport');
 
 const verificarAdmin = require('../middlewares/verificarAdmin.js');
 const verificarSesion = require('../middlewares/verificarSesion.js')
+const usuarios = require('../models/usuarios.js')
+const zonas = require('../models/zonas.js')
 
 //Index
 router.get('/', async (req, res) => {
@@ -14,17 +16,21 @@ router.get('/', async (req, res) => {
         estaLog = true
     }
 
-    res.render('index.html',
-        {
-            title: 'Inicio',
-            usuario: usuarioLogeado,
-            estaLog: estaLog
-        }
-    )
+    usuarios.find({}, function (err, pacientes) {
+    
+        res.render('index.html',
+            {
+                title: 'Inicio', 
+                usuario: usuarioLogeado,
+                estaLog: estaLog,
+                pacientes: pacientes
+            }
+        )
+        })
 })
 
 
-const usuarios = require('../models/usuarios.js')
+
 router.get('/perfil', verificarSesion, async (req, res) => {
     let usuarioLogeado = " "
     let estaLog = false
@@ -51,13 +57,19 @@ router.get('/nosotros', (req, res) => {
         estaLog = true
     }
  
-    res.render('about.html',
-        {
-            title: 'Nosotros', 
-            usuario: usuarioLogeado,
-            estaLog: estaLog
-        }
-    )
+    usuarios.find({}, function (err, pacientes) {
+        zonas.find({}, function (err, zonas) {
+        res.render('about.html',
+            {
+                title: 'Nosotros', 
+                usuario: usuarioLogeado,
+                estaLog: estaLog,
+                pacientes: pacientes,
+                zonas: zonas
+            }
+        )
+    })
+})
 })
 
 
@@ -78,23 +90,7 @@ router.get('/doctores', (req, res) => {
         }
     )
 })
-
-router.get('/blog', (req, res) => {
-    let usuarioLogeado = " "
-    let estaLog = false
-    if (req.isAuthenticated()) {
-        usuarioLogeado = req.user
-        estaLog = true
-    }
-    res.render('blog.html',
-        {
-            title: 'Blogs', 
-            usuario: usuarioLogeado,
-            estaLog: estaLog
-        }
-    )
 })
-
 router.get('/login', (req, res) => {
     let usuarioLogeado = " "
     let estaLog = false
@@ -113,7 +109,8 @@ router.get('/login', (req, res) => {
 
 
 
-router.get('/admin', (req, res) => {
+
+router.get('/admin',  verificarAdmin, async (req, res) => {
     let usuarioLogeado = " "
     let estaLog = false
     if (req.isAuthenticated()) {
@@ -121,13 +118,14 @@ router.get('/admin', (req, res) => {
         estaLog = true
     }
     usuarios.find({}, function (err, pacientes) {
-    
+    zonas.find({}, function (err, zonas) {
     res.render('admin.html',
         {
             title: 'Administradores', 
             usuario: usuarioLogeado,
             estaLog: estaLog,
-            pacientes: pacientes
+            pacientes: pacientes,
+            zonas: zonas
         }
     )
     })
@@ -135,21 +133,6 @@ router.get('/admin', (req, res) => {
 })
 
 
-router.get('/contacto', (req, res) => {
-    let usuarioLogeado = " "
-    let estaLog = false
-    if (req.isAuthenticated()) {
-        usuarioLogeado = req.user
-        estaLog = true
-    }
-    res.render('contact.html',
-        {
-            title: 'Blogs', 
-            usuario: usuarioLogeado,
-            estaLog: estaLog
-        }
-    )
-})
 
 router.get('/logout', (req, res) => {
     req.logout(function (err) {

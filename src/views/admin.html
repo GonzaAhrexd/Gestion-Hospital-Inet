@@ -50,7 +50,7 @@
                   <a onClick="pacientes()" href="#pacientes" class="btn btn-primary">Pacientes</a>
                   <a onClick="medicos()" href="#Medicos" class="btn btn-primary">Medicos</a>
                   <a onClick="admins()" href="#Administradores" class="btn btn-primary">Administradores</a>
-
+                  <a onClick="Zonas()" href="#Zonas" class="btn btn-primary">Zonas</a>
                 </div>
               </div>
             </div>
@@ -235,7 +235,7 @@
   
             
                   </div>
-                  <form method="post" action="medicos/eliminar/<%= usuario.id %>">
+                  <form method="post" action="admin/eliminar/<%= usuario.id %>">
                     <div class="container" style="display:flex;width:100%;justify-content: center;">
                       <div>
                         <button type="submit" class="btn btn-primary">Eliminar rol</button>
@@ -245,6 +245,61 @@
                 </div>
               </div>
               <% }})%>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <section id="Zonas">
+
+    <div class="product-section mt-150 mb-150">
+      <div class="container">
+        <div class="row product-lists">
+          <form method="post" action="zonas/agregar" enctype="multipart/form-data" >
+            <div class="container">
+              <div>
+                <input type="text" name="nombre" class="form-control" placeholder="Nombre de la zona">
+              </div>
+              <div>
+                <textarea type="text" name="descripcion" class="form-control" placeholder="Descripción" cols="30" rows="10"></textarea>
+              </div>
+              <div>
+                <p> <input class="form-control form-control-lg" type="file" placeholder="Imagen (Link)" name="imagen" id="imagen" required>
+              </div>
+              <div>
+                <button type="submit" class="btn btn-primary">Crear zona</button>
+              </div>
+            </div>
+          </form>
+          <%zonas.forEach(zona=> { %>
+          
+              <div class="col-md-6 col-lg-4 py-3 wow zoomIn">
+                <div class="card-doctor">
+                  <div class="header">
+                    <img src="/img/zonas/<%=zona.imagen %>" alt="">
+                    <div class="meta">
+                      <a href="#"><span class="mai-call"></span></a>
+                      <a href="#"><span class="mai-logo-whatsapp"></span></a>
+                    </div>
+                  </div>
+                  <div class="body">
+                    <p class="text-xl mb-0">  <%= zona.nombre %></p>
+
+                    <span class="text-sm text-grey"><%= zona.descripcion ||  'No asignada' %> </span>
+  
+            
+                  </div>
+                  <form method="post" action="zonas/eliminar/<%= zona.id %>">
+                    <div class="container" style="display:flex;width:100%;justify-content: center;">
+                      <div>
+                        <button type="submit" class="btn btn-primary">Eliminar zona</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <% })%>
         </div>
       </div>
     </div>
