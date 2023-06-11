@@ -33,7 +33,7 @@ require('dotenv').config({ //Dotenv para variables  de entorno
 //Sistema de login
 app.use(
   session({
-    secret: "gonzaahre",
+    secret: process.env.secret,
     resave: false,
     saveUninitialized: false,
  
